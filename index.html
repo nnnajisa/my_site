@@ -100,6 +100,62 @@
             transition: transform 0.15s ease-out;
         }
 
+        /* 1. 包装层：确保它覆盖全屏并置于最顶层 */
+.content-wrapper {
+    position: relative;
+    z-index: 5000; /* 必须高于星星 canvas */
+    width: 100%;
+    min-height: 100vh;
+    pointer-events: none; /* 让鼠标穿过容器，依然能触发星星的交互 */
+    transition: color 1s ease;
+    color: white; /* 默认暗色模式文字 */
+}
+
+/* 2. 模式切换：白模下文字变黑 */
+.light-mode .content-wrapper { color: black; }
+
+/* 3. 让导航和按钮恢复鼠标点击 */
+.nav-bar, .hero-section h1 { pointer-events: auto; }
+
+/* 4. 简单的导航栏样式 */
+.nav-bar {
+    position: fixed;
+    top: 40px;
+    right: 50px;
+    display: flex;
+    gap: 30px;
+}
+
+.nav-item {
+    text-decoration: none;
+    color: inherit;
+    font-family: sans-serif;
+    font-weight: 300;
+    letter-spacing: 2px;
+    font-size: 14px;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.nav-item:hover { opacity: 1; }
+
+/* 5. 主文字居中样式 */
+.hero-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+}
+
+.hero-section h1 {
+    font-size: clamp(40px, 8vw, 120px);
+    font-weight: 200;
+    letter-spacing: 15px;
+    margin: 0;
+}
+
         /* 7. 图片链接（保持不变） */
 /* 修改后的稳健路径 */
 .dark-bg { background-image: url('images/bg-dark.png'); }
@@ -135,6 +191,19 @@
 </div>
 
 <canvas id="universe"></canvas>
+
+<div class="content-wrapper">
+    <nav class="nav-bar">
+        <a href="#home" class="nav-item">Home</a>
+        <a href="#works" class="nav-item">Works</a>
+        <a href="#about" class="nav-item">About</a>
+    </nav>
+
+    <main class="hero-section">
+        <h1>NAJISA UNIVERSE</h1>
+        <p>Digital Creator / Web Developer</p>
+    </main>
+</div>
 
 <div class="top-container">
     <div class="top-layer top-dark"></div>
