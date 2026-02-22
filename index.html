@@ -1,329 +1,221 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Universe</title>
+    <title>Najisa's Universe</title>
     <style>
-        /* 1. 基础重置：去掉 Cargo 强加的边距和滚动条 */
         body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: #000;
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            overflow: hidden; background-color: #000;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            transition: background-color 1s ease;
         }
 
-        :root { --bg-color: #000; }
-        .light-mode { --bg-color: #fff; }
-
-        /* 2. 通用全屏容器 */
-        .bg-container, .top-container, #universe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
+        /* 宇宙 Canvas 与 模糊滤镜 */
+        #universe {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100vh;
+            filter: blur(1.5px); 
+            z-index: 1;
         }
 
-        /* 3. 背景层呼吸 */
-        .mesh-layer, .top-layer {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            background-size: cover;
-            background-position: center center;
+        /* 背景呼吸动画 */
+        .bg-container, .top-container {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100vh; pointer-events: none; z-index: 2;
+        }
+        .mesh-layer {
+            position: absolute; width: 100%; height: 100%;
+            background-size: cover; background-position: center;
             transition: opacity 1s ease;
-            transform-origin: center center;
+            animation: meshBreathe 12s infinite ease-in-out;
         }
-
-        .mesh-layer { animation: meshBreathe 12s infinite ease-in-out; }
-        .top-layer { transform: scale(1.1); }
-
         @keyframes meshBreathe { 
             0%, 100% { transform: scale(1.1); } 
-            50% { transform: scale(1.25); } 
+            50% { transform: scale(1.2); } 
         }
 
-        /* 4. 背景切换逻辑 */
-        .dark-bg, .top-dark { opacity: 1; }
-        .light-bg, .top-light { opacity: 0; }
-        .light-mode .dark-bg, .light-mode .top-dark { opacity: 0; }
-        .light-mode .light-bg, .light-mode .top-light { opacity: 1; }
+        /* 1. 标题与副标题调整 */
+        .header-content {
+            position: absolute; top: 15vh; right: 8%;
+            text-align: right; color: white; transition: color 1s ease; z-index: 5000;
+        }
+        .header-content h1 { 
+            font-size: 160px; font-weight: 900; /* 极粗 */
+            letter-spacing: -2px; margin: 0; line-height: 0.9; 
+        }
+        .header-content p { 
+            font-size: 24px; font-weight: 400; 
+            margin-top: 45px; /* 进一步下移 */
+            letter-spacing: 5px; 
+        }
 
-        /* 5. 灯绳系统 */
+        /* 2. 导航栏间距与独立 Hover */
+        .nav-bar {
+            position: absolute; top: 45vh; right: 8%;
+            display: flex; gap: 80px; z-index: 5000;
+        }
+        .nav-item {
+            text-decoration: none; color: white;
+            font-size: 20px; font-weight: 600;
+            letter-spacing: 6px; text-transform: uppercase;
+            transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1), letter-spacing 0.4s ease;
+            display: inline-block;
+        }
+        .nav-item:hover { 
+            letter-spacing: 12px; 
+            transform: scale(1.15); 
+        }
+
+        /* 3. 眼睛灯黑科技：全方位轮廓加粗 */
         .eye-toggle {
-            position: fixed;
-            top: 0;
-            left: 30px;
-            width: 200px;
-            height: 65vh;
-            z-index: 4000;
-            cursor: pointer;
+            position: fixed; top: 0px; left: 45px;
+            width: 110px; height: 45vh; z-index: 6000; cursor: pointer;
         }
-
         .layer-part {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center top;
-            transition: opacity 0.1s steps(1); 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-size: contain; background-repeat: no-repeat;
+            transition: opacity 0.1s steps(1);
+            /* 四个方向叠加投影，实现图片线条加粗 */
+            filter: drop-shadow(1px 0px 0px currentColor) 
+                    drop-shadow(-1px 0px 0px currentColor)
+                    drop-shadow(0px 1px 0px currentColor)
+                    drop-shadow(0px -1px 0px currentColor);
         }
 
-        /* 灯绳显隐 */
-        .eye-light, .line-light, .han-light { opacity: 0; }
-        .eye-dark, .line-dark, .han-dark { opacity: 1; }
-        .light-mode .eye-dark, .light-mode .line-dark, .light-mode .han-dark { opacity: 0; }
-        .light-mode .eye-light, .light-mode .line-light, .light-mode .han-light { opacity: 1; }
-
-        /* 6. 交互动画 */
-        .line-group, .han-group { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); 
-            transform-origin: top center; 
+        /* 4. 汉堡菜单位置 */
+        .menu-btn {
+            position: fixed; top: 65px; right: 50px;
+            width: 30px; height: 18px; cursor: pointer; z-index: 7000;
+            display: flex; flex-direction: column; justify-content: space-between;
         }
+        .menu-line { width: 100%; height: 2px; background-color: white; border-radius: 10px; transition: 0.4s; }
+        .menu-btn.active .line-1 { transform: translateY(8px) rotate(45deg); }
+        .menu-btn.active .line-2 { transform: translateY(-8px) rotate(-45deg); }
 
-        .eye-toggle:hover .line-group { transform: scaleY(1.02); }
-        .eye-toggle:hover .han-group { transform: translateY(10px); }
+        /* 模式切换 */
+        .light-mode { background-color: #fff; }
+        .light-mode .header-content h1, .light-mode .header-content p, .light-mode .nav-item { color: black; }
+        .light-mode .menu-line { background-color: black; }
+        .light-mode .layer-part { color: black; }
 
-        .eye-toggle:active .line-group { 
-            transform: scaleY(1.05); 
-            transition: transform 0.15s ease-out;
-        }
-        .eye-toggle:active .han-group { 
-            transform: translateY(25px); 
-            transition: transform 0.15s ease-out;
-        }
+        /* 图片引用 */
+        .dark-bg { background-image: url('images/bg-dark.png'); }
+        .light-bg { background-image: url('images/bg-light.png'); }
+        .top-dark { background-image: url('images/top-dark.png'); }
+        .top-light { background-image: url('images/top-light.png'); }
+        .eye-dark { background-image: url('images/eye-dark.png'); }
+        .eye-light { background-image: url('images/eye-light.png'); }
+        .line-dark { background-image: url('images/line-dark.png'); }
+        .line-light { background-image: url('images/line-light.png'); }
+        .han-dark { background-image: url('images/han-dark.png'); }
+        .han-light { background-image: url('images/han-light.png'); }
 
-        /* 1. 包装层：确保它覆盖全屏并置于最顶层 */
-.content-wrapper {
-    position: relative;
-    z-index: 5000; /* 必须高于星星 canvas */
-    width: 100%;
-    min-height: 100vh;
-    pointer-events: none; /* 让鼠标穿过容器，依然能触发星星的交互 */
-    transition: color 1s ease;
-    color: white; /* 默认暗色模式文字 */
-}
-
-/* 2. 模式切换：白模下文字变黑 */
-.light-mode .content-wrapper { color: black; }
-
-/* 3. 让导航和按钮恢复鼠标点击 */
-.nav-bar, .hero-section h1 { pointer-events: auto; }
-
-/* 4. 简单的导航栏样式 */
-.nav-bar {
-    position: fixed;
-    top: 40px;
-    right: 50px;
-    display: flex;
-    gap: 30px;
-}
-
-.nav-item {
-    text-decoration: none;
-    color: inherit;
-    font-family: sans-serif;
-    font-weight: 300;
-    letter-spacing: 2px;
-    font-size: 14px;
-    opacity: 0.7;
-    transition: opacity 0.3s;
-}
-
-.nav-item:hover { opacity: 1; }
-
-/* 5. 主文字居中样式 */
-.hero-section {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    text-align: center;
-}
-
-.hero-section h1 {
-    font-size: clamp(40px, 8vw, 120px);
-    font-weight: 200;
-    letter-spacing: 15px;
-    margin: 0;
-}
-
-        /* 7. 图片链接（保持不变） */
-/* 修改后的稳健路径 */
-.dark-bg { background-image: url('images/bg-dark.png'); }
-.light-bg { background-image: url('images/bg-light.png'); }
-.top-dark { background-image: url('images/top-dark.png'); }
-.top-light { background-image: url('images/top-light.png'); }
-.eye-dark { background-image: url('images/eye-dark.png'); }
-.eye-light { background-image: url('images/eye-light.png'); }
-.line-dark { background-image: url('images/line-dark.png'); }
-.line-light { background-image: url('images/line-light.png'); }
-.han-dark { background-image: url('images/han-dark.png'); }
-.han-light { background-image: url('images/han-light.png'); }
+        .eye-light, .line-light, .han-light, .light-bg, .top-light { opacity: 0; }
+        .light-mode .eye-dark, .light-mode .line-dark, .light-mode .han-dark, .light-mode .dark-bg, .light-mode .top-dark { opacity: 0; }
+        .light-mode .eye-light, .light-mode .line-light, .light-mode .han-light, .light-mode .light-bg, .light-mode .top-light { opacity: 1; }
     </style>
 </head>
 <body>
 
-<div class="eye-toggle" id="modeBtn">
-    <div class="layer-part eye-dark"></div>
-    <div class="layer-part eye-light"></div>
-    <div class="line-group">
-        <div class="layer-part line-dark"></div>
-        <div class="layer-part line-light"></div>
+    <div class="menu-btn" id="menuBtn"><div class="menu-line line-1"></div><div class="menu-line line-2"></div></div>
+
+    <div class="eye-toggle" id="modeBtn">
+        <div class="layer-part eye-dark"></div><div class="layer-part eye-light"></div>
+        <div class="line-group" id="lineG"><div class="layer-part line-dark"></div><div class="layer-part line-light"></div></div>
+        <div class="han-group" id="hanG"><div class="layer-part han-dark"></div><div class="layer-part han-light"></div></div>
     </div>
-    <div class="han-group">
-        <div class="layer-part han-dark"></div>
-        <div class="layer-part han-light"></div>
-    </div>
-</div>
 
-<div class="bg-container">
-    <div class="mesh-layer dark-bg"></div>
-    <div class="mesh-layer light-bg"></div>
-</div>
+    <div class="header-content"><h1>Hi! I'm Najisa</h1><p>Digital Creator / Web Developer</p></div>
 
-<canvas id="universe"></canvas>
-
-<div class="content-wrapper">
     <nav class="nav-bar">
-        <a href="#home" class="nav-item">Home</a>
         <a href="#works" class="nav-item">Works</a>
         <a href="#about" class="nav-item">About</a>
+        <a href="#contact" class="nav-item">Contact</a>
     </nav>
 
-    <main class="hero-section">
-        <h1>NAJISA UNIVERSE</h1>
-        <p>Digital Creator / Web Developer</p>
-    </main>
-</div>
+    <div class="bg-container"><div class="mesh-layer dark-bg"></div><div class="mesh-layer light-bg"></div></div>
+    <canvas id="universe"></canvas>
+    <div class="top-container"><div class="top-layer top-dark"></div><div class="top-layer top-light"></div></div>
 
-<div class="top-container">
-    <div class="top-layer top-dark"></div>
-    <div class="top-layer top-light"></div>
-</div>
+    <script>
+        const canvas = document.getElementById('universe');
+        const ctx = canvas.getContext('2d');
+        const modeBtn = document.getElementById('modeBtn');
+        const menuBtn = document.getElementById('menuBtn');
+        let isLightMode = false, colorTransition = 0;
 
-<script>
-    const canvas = document.getElementById('universe');
-    const ctx = canvas.getContext('2d');
-    const modeBtn = document.getElementById('modeBtn');
-    let isLightMode = false, colorTransition = 0; 
+        menuBtn.onclick = () => menuBtn.classList.toggle('active');
+        modeBtn.onclick = () => { document.body.classList.toggle('light-mode'); isLightMode = !isLightMode; };
 
-    const config = { 
-        starCount: 45, 
-        particleCount: 45000, 
-        baseSize: 40, 
-        longAxisRatio: 2.2, 
-        sharpness: 0.45,
-        friction: 0.94, 
-        ease: 0.06 
-    };
+        const config = { starCount: 45, particleCount: 45000, baseSize: 40, longAxisRatio: 2.2, sharpness: 0.45, friction: 0.94, ease: 0.06 };
+        let v = { x: 0, y: 0, tx: 0, ty: 0 }, lastM = { x: 0, y: 0 }, stars = [], motherCache = { dark: [], light: [] };
 
-    let v = { x: 0, y: 0, tx: 0, ty: 0 };
-    let lastM = { x: 0, y: 0 };
-    const motherCache = { dark: [], light: [] };
+        function createMother(color, blurStr) {
+            const mCanvas = document.createElement('canvas');
+            const w = config.baseSize * 5, h = w * config.longAxisRatio;
+            mCanvas.width = w; mCanvas.height = h;
+            const mctx = mCanvas.getContext('2d');
+            if (blurStr !== '0px') mctx.filter = `blur(${blurStr})`;
+            mctx.fillStyle = color;
+            for (let i = 0; i < config.particleCount; i++) {
+                const rx = (Math.random() - 0.5) * config.baseSize * 4;
+                const ry = (Math.random() - 0.5) * config.baseSize * config.longAxisRatio * 2;
+                const nx = Math.abs(rx) / config.baseSize, ny = Math.abs(ry) / (config.baseSize * config.longAxisRatio);
+                const dist = Math.pow(nx, config.sharpness) + Math.pow(ny, config.sharpness);
+                if (dist < 0.8 || (dist < 1.6 && Math.random() < Math.pow(1 - (dist - 0.8) / 0.8, 8))) {
+                    let pSize = 0.3 + 1.9 * Math.pow(Math.max(0, 1 - dist/1.6), 2);
+                    mctx.fillRect(w/2 + rx, h/2 + ry, pSize, pSize);
+                }
+            }
+            return mCanvas;
+        }
 
-    function createMother(color, blurStr) {
-        const mCanvas = document.createElement('canvas');
-        const w = config.baseSize * 5, h = w * config.longAxisRatio;
-        mCanvas.width = w; mCanvas.height = h;
-        const mctx = mCanvas.getContext('2d');
-        if (blurStr !== '0px') mctx.filter = `blur(${blurStr})`;
-        mctx.fillStyle = color;
-        const cx = w/2, cy = h/2;
-        for (let i = 0; i < config.particleCount; i++) {
-            const rx = (Math.random() - 0.5) * config.baseSize * 4;
-            const ry = (Math.random() - 0.5) * config.baseSize * config.longAxisRatio * 2;
-            const nx = Math.abs(rx) / config.baseSize, ny = Math.abs(ry) / (config.baseSize * config.longAxisRatio);
-            const dist = Math.pow(nx, config.sharpness) + Math.pow(ny, config.sharpness);
-            if (dist < 0.8 || (dist < 1.6 && Math.random() < Math.pow(1 - (dist - 0.8) / 0.8, 8))) {
-                let pSize = 0.3 + 1.9 * Math.pow(Math.max(0, 1 - dist/1.6), 2);
-                mctx.fillRect(cx + rx, cy + ry, pSize, pSize);
+        class Star {
+            constructor() { this.reset(); this.age = Math.random() * 8000; }
+            reset() {
+                this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
+                const r = Math.random();
+                if (r > 0.8) { this.idx = 0; this.sc = 0.45; }
+                else if (r > 0.4) { this.idx = 1; this.sc = 0.28; }
+                else { this.idx = 2; this.sc = 0.15; }
+                this.life = 10000 + Math.random() * 10000; this.age = 0;
+            }
+            update() { this.age += 16.6; if (this.age >= this.life) this.reset(); }
+            draw(ox, oy, trans) {
+                const weight = (2.5 - this.idx);
+                const dx = this.x - (config.baseSize*5)/2 + (ox * weight);
+                const dy = this.y - (config.baseSize*5*2.2)/2 + (oy * weight);
+                const op = this.age < 2500 ? this.age/2500 : (this.age > this.life-2500 ? (this.life-this.age)/2500 : 1);
+                ctx.globalAlpha = Math.max(0, op * (1 - trans));
+                ctx.drawImage(motherCache.dark[this.idx], dx, dy);
+                ctx.globalAlpha = Math.max(0, op * trans);
+                ctx.drawImage(motherCache.light[this.idx], dx, dy);
             }
         }
-        return mCanvas;
-    }
 
-    class Star {
-        constructor() { this.reset(); this.age = Math.random() * 8000; }
-        reset() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            const r = Math.random();
-            if (r > 0.8) { this.idx = 0; this.sc = 0.45; this.bAmp = 0.35; this.bSpd = 0.005; } 
-            else if (r > 0.4) { this.idx = 1; this.sc = 0.28; this.bAmp = 0.15; this.bSpd = 0.012; } 
-            else { this.idx = 2; this.sc = 0.15; this.bAmp = 0.05; this.bSpd = 0.02; }
-            this.op = 0; this.life = 10000 + Math.random() * 10000; this.age = 0;
-            this.bPh = Math.random() * 7; this.tPh = Math.random() * 7;
+        function init() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            motherCache.dark = ['0px', '0.6px', '1.8px'].map(b => createMother("white", b));
+            motherCache.light = ['0px', '0.6px', '1.8px'].map(b => createMother("black", b));
+            stars = Array.from({ length: config.starCount }, () => new Star());
         }
-        update() {
-            this.age += 16.6; this.bPh += this.bSpd; this.tPh += 0.05;
-            const fade = 2500;
-            if (this.age < fade) this.op = this.age / fade;
-            else if (this.age > this.life - fade) this.op = (this.life - this.age) / fade;
-            else this.op = 1;
-            if (this.age >= this.life) this.reset();
+
+        function loop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            v.tx *= config.friction; v.ty *= config.friction;
+            v.x += (v.tx - v.x) * config.ease; v.y += (v.ty - v.y) * config.ease;
+            colorTransition = isLightMode ? Math.min(1, colorTransition + 0.02) : Math.max(0, colorTransition - 0.02);
+            stars.forEach(s => { s.update(); s.draw(v.x, v.y, colorTransition); });
+            requestAnimationFrame(loop);
         }
-        draw(ox, oy) {
-            const finalSc = this.sc * (1 + Math.sin(this.bPh) * this.bAmp) * (1 + Math.sin(this.tPh) * 0.1);
-            const m = motherCache.dark[this.idx];
-            const w = m.width * finalSc, h = m.height * finalSc;
-            const weight = (2.5 - this.idx); 
-            const dx = this.x - w/2 + (ox * weight);
-            const dy = this.y - h/2 + (oy * weight);
 
-            ctx.globalAlpha = Math.max(0, this.op * (1 - colorTransition));
-            ctx.drawImage(motherCache.dark[this.idx], dx, dy, w, h);
-            ctx.globalAlpha = Math.max(0, this.op * colorTransition);
-            ctx.drawImage(motherCache.light[this.idx], dx, dy, w, h);
-        }
-    }
-
-    let stars = [];
-    function init() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        const blurs = ['0px', '0.6px', '1.8px'];
-        motherCache.dark = blurs.map(b => createMother("white", b));
-        motherCache.light = blurs.map(b => createMother("black", b));
-        stars = Array.from({ length: config.starCount }, () => new Star());
-    }
-
-    function loop() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        v.tx *= config.friction; v.ty *= config.friction;
-        v.x += (v.tx - v.x) * config.ease; v.y += (v.ty - v.y) * config.ease;
-
-        const step = 16.6 / 1000;
-        if (isLightMode && colorTransition < 1) colorTransition = Math.min(1, colorTransition + step);
-        if (!isLightMode && colorTransition > 0) colorTransition = Math.max(0, colorTransition - step);
-        
-        stars.forEach(s => { s.update(); s.draw(v.x, v.y); });
-        requestAnimationFrame(loop);
-    }
-
-    window.addEventListener('mousemove', (e) => {
-        if (lastM.x !== 0) {
-            v.tx += (e.clientX - lastM.x) * 0.5;
-            v.ty += (e.clientY - lastM.y) * 0.5;
-        }
-        lastM.x = e.clientX; lastM.y = e.clientY;
-    });
-
-    modeBtn.onclick = () => {
-        document.body.classList.toggle('light-mode');
-        isLightMode = !isLightMode;
-    };
-
-    window.addEventListener('resize', init);
-    init(); loop();
-</script>
+        window.onmousemove = (e) => {
+            if (lastM.x !== 0) { v.tx += (e.clientX - lastM.x) * 0.5; v.ty += (e.clientY - lastM.y) * 0.5; }
+            lastM.x = e.clientX; lastM.y = e.clientY;
+        };
+        window.onresize = init; init(); loop();
+    </script>
 </body>
 </html>
