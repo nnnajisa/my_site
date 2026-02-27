@@ -81,24 +81,63 @@
         .light-mode .eye-dark, .light-mode .line-dark, .light-mode .han-dark { opacity: 0; }
         .light-mode .eye-light, .light-mode .line-light, .light-mode .han-light { opacity: 1; }
 
-        /* 6. 交互动画 */
-        .line-group, .han-group { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); 
-            transform-origin: top center; 
-        }
+.eye-toggle {
+    position: fixed;
+    top: 0;
+    left: 0px;
+    width: 200px;
+    height: 65vh;
+    z-index: 4000;
+    cursor: pointer;
+    
+    /* 🚀 核心修改：整体缩小到原来的 70% */
+    transform: scale(0.7); 
+    /* 确保缩放中心在顶部，这样灯绳还是挂在顶部的 */
+    transform-origin: top center; 
+    
+    /* 增加一个过渡，防止缩放时太生硬 */
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
 
-        .eye-toggle:hover .line-group { transform: scaleY(1.02); }
-        .eye-toggle:hover .han-group { transform: translateY(10px); }
+        /* --- 基础定位 (保留) --- */
+.line-group, .han-group { 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    transform-origin: top center; 
+    /* 这里的 transition 删掉，统一写在下面 */
+}
 
-        .eye-toggle:active .line-group { 
-            transform: scaleY(1.05); 
-            transition: transform 0.15s ease-out;
-        }
-        .eye-toggle:active .han-group { 
-            transform: translateY(25px); 
-            transition: transform 0.15s ease-out;
-        }
+/* --- 1. 悬停状态 (不变) --- */
+.eye-toggle:hover .line-group { transform: scaleY(1.02); }
+.eye-toggle:hover .han-group { transform: translateY(10px); }
+
+/* --- 2. 按下瞬间 (Active) --- */
+.eye-toggle:active .eye-dark, 
+.eye-toggle:active .eye-light {
+    transform: scaleY(1.1) scaleX(0.92); 
+    transform-origin: top center;
+    transition: transform 0.1s ease-out; /* 按下瞬间的速度 */
+}
+
+.eye-toggle:active .line-group { 
+    transform: scaleY(1.02) translateY(8px); 
+    transition: transform 0.1s ease-out; /* 强制同步 */
+}
+
+.eye-toggle:active .han-group { 
+    transform: translateY(17px); 
+    transition: transform 0.1s ease-out; /* 强制同步 */
+}
+
+/* --- 3. 基础过渡 (回弹效果的灵魂) --- */
+/* 这里统一控制松开鼠标后的弹力感觉 */
+.line-group, .han-group, .eye-dark, .eye-light {
+    transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); 
+}
+
 
         /* 7. 图片链接（保持不变） */
 /* 修改后的图片路径示例 */
