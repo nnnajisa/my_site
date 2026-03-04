@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Najisa | Portfolio</title>
+    <title>Works | Najisa</title>
     <style>
-        /* 1. 基础重置 */
+        /* 1. 基础重置 (保持统一) */
         body, html { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
             overflow: hidden; background-color: #000; 
@@ -13,7 +13,7 @@
             transition: background-color 0.8s ease;
         }
         
-        /* 2. 背景与层级 */
+        /* 2. 背景与层级 (保持统一) */
         .bg-container, .top-container, #universe { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100vh; 
             transition: filter 0.6s ease;
@@ -29,70 +29,104 @@
         .light-mode .dark-bg, .light-mode .top-dark { opacity: 0; }
         .light-mode .light-bg, .light-mode .top-light { opacity: 1; }
 
-        body.menu-open .bg-container, body.menu-open #universe, body.menu-open .top-container, body.menu-open .hero-container {
+        body.menu-open .bg-container, body.menu-open #universe, body.menu-open .top-container {
             filter: blur(2px); 
             pointer-events: none;
         }
 
-        /* 3. 灯绳系统 (lamp-toggle) */
+        /* 3. 灯绳系统 (保持逻辑统一) */
         .lamp-toggle {
             position: fixed; top: 0; left: 0; width: 200px; height: 65vh; z-index: 4000;
             transform: scale(0.7); transform-origin: top center;
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        
-        .click-mask {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 100; cursor: pointer;
-        }
-
-        .layer-part { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            background-size: contain; background-repeat: no-repeat; background-position: center top; 
-            transition: opacity 0.1s steps(1); 
-            pointer-events: none; 
-        }
-        
+        .click-mask { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 100; cursor: pointer; }
+        .layer-part { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: contain; background-repeat: no-repeat; background-position: center top; transition: opacity 0.1s steps(1); pointer-events: none; }
         .eye-dark { background-image: url('./images/eye-dark.png'); }
         .eye-light { background-image: url('./images/eye-light.png'); }
         .line-dark { background-image: url('./images/line-dark.png'); }
         .line-light { background-image: url('./images/line-light.png'); }
         .han-dark { background-image: url('./images/han-dark.png'); }
         .han-light { background-image: url('./images/han-light.png'); }
-
         .line-group, .han-group { position: absolute; top: 0; left: 0; width: 100%; height: 100%; transform-origin: top center; transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); }
         .lamp-toggle:hover .line-group { transform: scaleY(1.02); }
         .lamp-toggle:hover .han-group { transform: translateY(10px); }
-
         .lamp-toggle:active .eye-dark, .lamp-toggle:active .eye-light { transform: scaleY(1.1) scaleX(0.92); transform-origin: top center; transition: transform 0.1s ease-out; }
         .lamp-toggle:active .line-group { transform: scaleY(1.02) translateY(8px); transition: transform 0.1s ease-out; }
         .lamp-toggle:active .han-group { transform: translateY(17px); transition: transform 0.1s ease-out; }
-
         .eye-light, .line-light, .han-light { opacity: 0; }
         .light-mode .eye-dark, .light-mode .line-dark, .light-mode .han-dark { opacity: 0; }
         .light-mode .eye-light, .light-mode .line-light, .light-mode .han-light { opacity: 1; }
 
-        /* 4. 中心排版 */
-        .hero-container {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            text-align: center; z-index: 9997; pointer-events: none; width: 100%;
+        /* 4. Works 专有布局 */
+        .works-content-wrapper {
+            position: fixed; top: 50%; left: 52%; transform: translate(-45%, -50%);
+            width: 85vw; height: 75vh; display: flex; z-index: 2000;
         }
-        .main-title {
-            pointer-events: auto; color: white; font-size: 150px; letter-spacing: 50px; 
-            margin: 0; padding-left: 50px; font-weight: 100; cursor: pointer; text-decoration: none;
-            transition: opacity 0.5s ease, color 0.8s ease; line-height: 1.1;
-        }
-        .description { color: rgba(255, 255, 255, 0.6); font-size: 14px; letter-spacing: 6px; text-transform: uppercase; margin: 20px 0 60px 0; font-weight: 300; }
-        .sub-nav { pointer-events: auto; display: flex; justify-content: center; gap: 60px; }
-        .nav-item { color: white; text-decoration: none; font-size: 14px; letter-spacing: 6px; text-transform: uppercase; position: relative; transition: color 0.8s ease; }
-        .nav-item::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 1px; background: white; transition: width 0.3s ease; }
-        .nav-item:hover::after { width: calc(100% - 6px); }
 
-        /* 5. 侧滑菜单 (0.03透明) */
+        .works-sidebar {
+            width: 220px; height: 100%; display: flex; flex-direction: column; 
+            justify-content: flex-end; padding-bottom: 8vh; gap: 40px;
+        }
+        .nav-group { display: flex; flex-direction: column; gap: 12px; }
+        .nav-label { font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: rgba(255,255,255,0.3); font-weight: 300; }
+        .nav-link { 
+            color: white; text-decoration: none; font-size: 11px; letter-spacing: 2px; 
+            opacity: 0.5; transition: all 0.4s; width: fit-content; position: relative; cursor: pointer; text-transform: uppercase;
+        }
+        .nav-link::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: white; transition: width 0.3s; }
+        .nav-link:hover { opacity: 1; } .nav-link:hover::after { width: 100%; }
+
+        .works-slider {
+            flex: 1; display: flex; overflow-x: auto; overflow-y: hidden;
+            scroll-behavior: smooth; gap: 8vw; padding: 0 15vw 0 2vw;
+            align-items: center; cursor: grab; user-select: none;
+        }
+        .works-slider:active { cursor: grabbing; }
+        .works-slider::-webkit-scrollbar { display: none; }
+
+        .work-card {
+            flex: 0 0 auto; width: 32vw; height: 50vh; display: flex; 
+            flex-direction: column; justify-content: center; position: relative;
+        }
+
+        .work-img-box { 
+            width: 100%; height: 85%; overflow: hidden; position: relative; 
+            background: rgba(255, 255, 255, 0.03); 
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            transition: background 0.5s ease;
+        }
+        .light-mode .work-img-box { background: rgba(0, 0, 0, 0.03); }
+        .work-img-box img { 
+            width: 100%; height: 100%; object-fit: cover; 
+            filter: grayscale(0.8) brightness(0.7); 
+            opacity: 0; 
+            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), filter 1s ease, transform 1s cubic-bezier(0.19, 1, 0.22, 1); 
+            pointer-events: none;
+        }
+        .work-img-box img.loaded { opacity: 1; }
+        .work-img-box.is-loaded { background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; }
+        .work-card:hover img.loaded { filter: grayscale(0) brightness(1.1); transform: scale(1.05); }
+
+        .work-meta { margin-top: 20px; pointer-events: none; }
+        .work-type { font-size: 9px; letter-spacing: 3px; color: rgba(255,255,255,0.4); text-transform: uppercase; }
+        .work-name { font-size: 18px; letter-spacing: 6px; color: white; font-weight: 100; margin: 8px 0; text-transform: uppercase; }
+
+        .progress-bar-container { position: absolute; bottom: 5vh; left: 220px; width: calc(100% - 320px); height: 1px; background: rgba(255,255,255,0.1); }
+        .progress-fill { width: 0%; height: 100%; background: white; transition: width 0.1s linear; }
+
+        /* Lightbox (去掉方框文字) */
+        .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: all 0.5s ease; backdrop-filter: blur(15px); cursor: zoom-out; }
+        .lightbox.active { opacity: 1; visibility: visible; }
+        .lightbox-content { position: relative; width: 85vw; height: 48vw; max-height: 80vh; display: flex; justify-content: center; cursor: default; }
+        .lightbox-media { width: 100%; height: 100%; border: none; }
+        .lightbox-close { position: absolute; top: -40px; right: 0; color: white; font-size: 11px; cursor: pointer; letter-spacing: 6px; font-weight: 200; transition: opacity 0.3s; }
+        .lightbox-close:hover { opacity: 0.5; }
+
+        /* 5. 侧滑菜单 (去掉 Home) */
         .menu-overlay {
             position: fixed; top: 0; right: -450px; width: 400px; height: 100%;
-            background: rgba(0, 0, 0, 0.03); 
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.03); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
             z-index: 9998; display: flex; flex-direction: column; justify-content: center;
             padding-left: 60px; padding-bottom: 25vh; box-sizing: border-box;
             transition: right 0.6s cubic-bezier(0.4, 0, 0.2, 1);
@@ -103,30 +137,27 @@
         .menu-link {
             color: white; text-decoration: none; font-size: 32px; font-weight: 200;
             letter-spacing: 10px; text-transform: uppercase; position: relative; 
-            display: inline-block; width: fit-content; transition: opacity 0.4s ease;
-            opacity: 0; transform: translateX(30px);
+            display: inline-block; width: fit-content; transition: opacity 0.4s ease; opacity: 0; transform: translateX(30px);
         }
         .menu-overlay.active .menu-link { opacity: 1; transform: translateX(0); }
         .menu-link::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 1px; background: white; transition: width 0.3s ease; }
         .menu-link:hover::after { width: calc(100% - 10px); }
         .menu-link:hover { opacity: 0.7; }
-
         .menu-footer { position: absolute; bottom: 60px; color: rgba(255, 255, 255, 0.3); font-size: 10px; line-height: 2; letter-spacing: 3px; text-transform: uppercase; }
 
-        /* 亮色适配 */
-        .light-mode .main-title, .light-mode .nav-item, .light-mode .menu-link { color: black; }
-        .light-mode .description, .light-mode .menu-footer { color: rgba(0, 0, 0, 0.4); }
-        .light-mode .nav-item::after, .light-mode .menu-link::after { background-color: black; }
+        /* 亮色模式适配 (保持统一) */
+        .light-mode .nav-link, .light-mode .work-name, .light-mode .menu-link, .light-mode .lightbox-close { color: black; }
+        .light-mode .nav-label, .light-mode .work-type { color: rgba(0,0,0,0.4); }
+        .light-mode .nav-link::after, .light-mode .menu-link::after, .light-mode .progress-fill { background: black; }
         .light-mode .menu-overlay { background: rgba(255, 255, 255, 0.1); border-left: 1px solid rgba(0, 0, 0, 0.05); }
+        .light-mode .progress-bar-container { background: rgba(0,0,0,0.1); }
 
-        /* 6. 汉堡按钮 */
+        /* 汉堡按钮 (保持统一) */
         .top-right-util { position: fixed; top: 45px; right: 55px; z-index: 9999; }
         .burger-icon { width: 30px; height: 14px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; }
         .burger-icon span { width: 100%; height: 2px; background: white; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .burger-icon:not(.active):hover span:first-child { width: 80%; }
-        .burger-icon:not(.active):hover span:last-child { width: 80%; transform: translateX(8px); }
-        .burger-icon.active span:first-child { transform: translateY(6px) rotate(45deg); width: 100%; }
-        .burger-icon.active span:last-child { transform: translateY(-6px) rotate(-45deg); width: 100%; }
+        .burger-icon.active span:first-child { transform: translateY(6px) rotate(45deg); }
+        .burger-icon.active span:last-child { transform: translateY(-6px) rotate(-45deg); }
         .light-mode .burger-icon span { background-color: black; }
     </style>
 </head>
@@ -142,168 +173,143 @@
     <div class="menu-footer"><p>Based in New York | Media & Computational Design</p></div>
 </div>
 
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <div class="lightbox-content" onclick="event.stopPropagation()">
+        <span class="lightbox-close" onclick="closeLightbox()">CLOSE</span>
+        <div id="lbMediaContainer" style="width:100%; height:100%; display:flex; align-items:center; justify-content:center;"></div>
+    </div>
+</div>
+
 <div class="lamp-toggle" id="lampControl">
     <div class="click-mask" id="clickMask"></div>
-    <div class="layer-part eye-dark"></div>
-    <div class="layer-part eye-light"></div>
-    <div class="line-group">
-        <div class="layer-part line-dark"></div>
-        <div class="layer-part line-light"></div>
-    </div>
-    <div class="han-group">
-        <div class="layer-part han-dark"></div>
-        <div class="layer-part han-light"></div>
-    </div>
+    <div class="layer-part eye-dark"></div><div class="layer-part eye-light"></div>
+    <div class="line-group"><div class="layer-part line-dark"></div><div class="layer-part line-light"></div></div>
+    <div class="han-group"><div class="layer-part han-dark"></div><div class="layer-part han-light"></div></div>
 </div>
 
-<div class="bg-container">
-    <div class="mesh-layer dark-bg"></div><div class="mesh-layer light-bg"></div>
-</div>
-
+<div class="bg-container"><div class="mesh-layer dark-bg"></div><div class="mesh-layer light-bg"></div></div>
 <canvas id="universe"></canvas>
+<div class="top-container"><div class="top-layer top-dark"></div><div class="top-layer top-light"></div></div>
 
-<div class="top-container">
-    <div class="top-layer top-dark"></div><div class="top-layer top-light"></div>
-</div>
+<div class="top-right-util"><div class="burger-icon" id="burger"><span></span><span></span></div></div>
 
-<div class="top-right-util">
-    <div class="burger-icon" id="burger"><span></span><span></span></div>
-</div>
-
-<div class="hero-container">
-    <h1 class="main-title" onclick="location.reload()">WORK</h1>
-    <div class="description">Digital Artist | Media & Computational Designer</div>
-    <nav class="sub-nav">
-        <a href="works.html" class="nav-item">Work</a>
-        <a href="about.html" class="nav-item">About</a>
-        <a href="./assets/Najisa_Resume.pdf" class="nav-item" download>Resume</a>
-        <a href="contact.html" class="nav-item">Contact</a>
-    </nav>
+<div class="works-content-wrapper">
+    <aside class="works-sidebar">
+        <div class="nav-group"><span class="nav-label">Timeline</span><div id="timeNav"></div></div>
+        <div class="nav-group"><span class="nav-label">Category</span><div id="catNav"></div></div>
+    </aside>
+    <main class="works-slider" id="worksSlider"></main>
+    <div class="progress-bar-container"><div class="progress-fill" id="progressFill"></div></div>
 </div>
 
 <script>
-    const clickMask = document.getElementById('clickMask');
-    // 🚀 初始化：检查 sessionStorage
-    let isLightMode = sessionStorage.getItem('portfolio-mode') === 'light';
-    let colorTransition = isLightMode ? 1 : 0; 
+    const worksData = [
+        { name: "Circuit Memory", type: "Installation", year: "2026", path: "./images/work1.jpg", mediaType: "image", category: "Physical" },
+        { name: "Visual Narrative", type: "Video Art", year: "2025", path: "WTY52gRr9ak?si=za8Wy4Oe5L4-mSav", mediaType: "youtube", category: "Visual" },
+        { name: "Handmade Decay", type: "Craft", year: "2024", path: "./images/work2.jpg", mediaType: "image", category: "Physical" },
+        { name: "Digital Fossil", type: "3D Visualization", year: "2024", path: "./images/work3.jpg", mediaType: "image", category: "Visual" },
+        { name: "Code Nebula", type: "Generative Art", year: "2023", path: "./images/work4.jpg", mediaType: "image", category: "Code" }
+    ];
 
-    // 如果存的是 light，加载时立即应用
-    if (isLightMode) {
-        document.body.classList.add('light-mode');
+    const slider = document.getElementById('worksSlider');
+    const timeNav = document.getElementById('timeNav');
+    const catNav = document.getElementById('catNav');
+    const progressFill = document.getElementById('progressFill');
+
+    function initWorks() {
+        worksData.forEach((work, index) => {
+            const card = document.createElement('section'); card.className = 'work-card'; card.id = `work-${index}`;
+            card.addEventListener('mouseup', () => { if (!isDragging) openLightbox(work); });
+            const vidId = work.mediaType === 'youtube' ? work.path.split('?')[0] : '';
+            const thumb = work.mediaType === 'image' ? work.path : `https://img.youtube.com/vi/${vidId}/maxresdefault.jpg`;
+            card.innerHTML = `<div class="work-img-box"><img src="${thumb}"><div style="position:absolute;bottom:10px;right:10px;font-size:8px;color:white;opacity:0.5;z-index:5;">${work.mediaType.toUpperCase()}</div></div><div class="work-meta"><div class="work-type">${work.year} / ${work.category}</div><h3 class="work-name">${work.name}</h3></div>`;
+            const img = card.querySelector('img');
+            if (img) {
+                img.onload = function() { this.classList.add('loaded'); this.parentElement.classList.add('is-loaded'); };
+                if (img.complete) img.onload();
+            }
+            slider.appendChild(card);
+        });
+
+        const years = [...new Set(worksData.map(w => w.year))].sort().reverse();
+        years.forEach(y => {
+            const a = document.createElement('a'); a.className="nav-link"; a.innerText = y;
+            a.onclick=() => scrollToWork(worksData.findIndex(w => w.year === y));
+            timeNav.appendChild(a);
+        });
+
+        const cats = [...new Set(worksData.map(w => w.category))];
+        cats.forEach(c => {
+            const a = document.createElement('a'); a.className="nav-link"; a.innerText = c;
+            a.onclick=() => scrollToWork(worksData.findIndex(w => w.category === c));
+            catNav.appendChild(a);
+        });
     }
 
-    // 🚀 核心点击逻辑
+    function scrollToWork(index) {
+        slider.style.scrollBehavior = 'smooth';
+        const target = slider.children[index];
+        if(target) slider.scrollTo({ left: target.offsetLeft - 50 });
+    }
+
+    let isDown = false, isDragging = false, startX, scrollLeftOrigin;
+    slider.addEventListener('mousedown', (e) => { isDown = true; isDragging = false; slider.style.scrollBehavior = 'auto'; startX = e.pageX - slider.offsetLeft; scrollLeftOrigin = slider.scrollLeft; });
+    slider.addEventListener('mousemove', (e) => { if (!isDown) return; const x = e.pageX - slider.offsetLeft; const walk = (x - startX) * 2.8; if (Math.abs(walk) > 5) isDragging = true; slider.scrollLeft = scrollLeftOrigin - walk; });
+    window.addEventListener('mouseup', () => { isDown = false; setTimeout(() => isDragging = false, 10); });
+    slider.addEventListener('wheel', (e) => { e.preventDefault(); slider.style.scrollBehavior = 'auto'; slider.scrollLeft += e.deltaY * 1.5; });
+    slider.addEventListener('scroll', () => { const p = (slider.scrollLeft / (slider.scrollWidth - slider.clientWidth)) * 100; progressFill.style.width = (p || 0) + "%"; });
+
+    function openLightbox(work) {
+        const container = document.getElementById('lbMediaContainer');
+        container.innerHTML = '';
+        if (work.mediaType === 'image') {
+            container.innerHTML = `<img src="${work.path}" class="lightbox-media" style="object-fit:contain">`;
+        } else {
+            const vidId = work.path.split('?')[0];
+            container.innerHTML = `<iframe class="lightbox-media" style="width:80vw; height:45vw;" src="https://www.youtube.com/embed/${vidId}?autoplay=1&rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+        }
+        document.getElementById('lightbox').classList.add('active');
+    }
+    function closeLightbox() { document.getElementById('lightbox').classList.remove('active'); document.getElementById('lbMediaContainer').innerHTML = ''; }
+
+    const clickMask = document.getElementById('clickMask');
+    let isLightMode = sessionStorage.getItem('portfolio-mode') === 'light';
+    if (isLightMode) document.body.classList.add('light-mode');
     clickMask.onclick = function(e) {
         const rect = this.getBoundingClientRect();
-        const relativeY = e.clientY - rect.top;
-        const percentY = (relativeY / rect.height) * 100;
-
-        if (percentY <= 20) {
-            // 20% 之上（眼睛）-> 回主页
-            window.location.href = 'index.html';
-        } else {
-            // 20% 之下（绳子和手柄）-> 切换昼夜
-            isLightMode = !isLightMode;
-            document.body.classList.toggle('light-mode', isLightMode);
-            
-            // 🚀 保存到会话存储（刷新会消失，跳转会保留）
-            sessionStorage.setItem('portfolio-mode', isLightMode ? 'light' : 'dark');
-        }
+        if ((e.clientY - rect.top) / rect.height * 100 <= 20) { window.location.href = 'index.html'; }
+        else { isLightMode = !isLightMode; document.body.classList.toggle('light-mode', isLightMode); sessionStorage.setItem('portfolio-mode', isLightMode ? 'light' : 'dark'); }
     };
+    document.getElementById('burger').onclick = function() { this.classList.toggle('active'); document.getElementById('menuOverlay').classList.toggle('active'); document.body.classList.toggle('menu-open'); };
 
-    // --- 宇宙逻辑 ---
-    const canvas = document.getElementById('universe');
-    const ctx = canvas.getContext('2d');
+    const canvas = document.getElementById('universe'); const ctx = canvas.getContext('2d');
     const config = { starCount: 45, particleCount: 45000, baseSize: 40, longAxisRatio: 2.2, sharpness: 0.45, friction: 0.94, ease: 0.06 };
-    let v = { x: 0, y: 0, tx: 0, ty: 0 }, lastM = { x: 0, y: 0 };
+    let v = { x: 0, y: 0, tx: 0, ty: 0 }, lastM = { x: 0, y: 0 }, colorTransition = isLightMode ? 1 : 0;
     const motherCache = { dark: [], light: [] };
-
-    const burger = document.getElementById('burger');
-    const menuOverlay = document.getElementById('menuOverlay');
-    const menuLinks = document.querySelectorAll('.menu-link');
-    burger.onclick = function() {
-        this.classList.toggle('active');
-        menuOverlay.classList.toggle('active');
-        document.body.classList.toggle('menu-open'); 
-        if (menuOverlay.classList.contains('active')) {
-            menuLinks.forEach((link, index) => { link.style.transitionDelay = `${0.3 + index * 0.1}s`; });
-        }
-    };
-
     function createMother(color, blurStr) {
-        const mCanvas = document.createElement('canvas');
-        const w = config.baseSize * 5, h = w * config.longAxisRatio;
-        mCanvas.width = w; mCanvas.height = h;
-        const mctx = mCanvas.getContext('2d');
-        if (blurStr !== '0px') mctx.filter = `blur(${blurStr})`;
-        mctx.fillStyle = color;
-        const cx = w/2, cy = h/2;
+        const mCanvas = document.createElement('canvas'); mCanvas.width = 200; mCanvas.height = 400; const mctx = mCanvas.getContext('2d');
+        if (blurStr !== '0px') mctx.filter = `blur(${blurStr})`; mctx.fillStyle = color;
         for (let i = 0; i < config.particleCount; i++) {
-            const rx = (Math.random() - 0.5) * config.baseSize * 4;
-            const ry = (Math.random() - 0.5) * config.baseSize * config.longAxisRatio * 2;
-            const nx = Math.abs(rx) / config.baseSize, ny = Math.abs(ry) / (config.baseSize * config.longAxisRatio);
-            const dist = Math.pow(nx, config.sharpness) + Math.pow(ny, config.sharpness);
-            if (dist < 0.8 || (dist < 1.6 && Math.random() < Math.pow(1 - (dist - 0.8) / 0.8, 8))) {
-                let pSize = 0.3 + 1.9 * Math.pow(Math.max(0, 1 - dist/1.6), 2);
-                mctx.fillRect(cx + rx, cy + ry, pSize, pSize);
-            }
+            const rx = (Math.random() - 0.5) * 160; const ry = (Math.random() - 0.5) * 320;
+            if (Math.pow(Math.abs(rx)/40, 0.45) + Math.pow(Math.abs(ry)/88, 0.45) < 0.8) mctx.fillRect(100+rx, 200+ry, 2, 2);
         }
         return mCanvas;
     }
     class Star {
-        constructor() { this.reset(); this.age = Math.random() * 8000; }
-        reset() {
-            this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
-            const r = Math.random();
-            if (r > 0.8) { this.idx = 0; this.sc = 0.45; this.bAmp = 0.35; this.bSpd = 0.005; } 
-            else if (r > 0.4) { this.idx = 1; this.sc = 0.28; this.bAmp = 0.15; this.bSpd = 0.012; } 
-            else { this.idx = 2; this.sc = 0.15; this.bAmp = 0.05; this.bSpd = 0.02; }
-            this.op = 0; this.life = 10000 + Math.random() * 10000; this.age = 0;
-            this.bPh = Math.random() * 7; this.tPh = Math.random() * 7;
-        }
-        update() {
-            this.age += 16.6; this.bPh += this.bSpd; this.tPh += 0.05;
-            const fade = 2500;
-            if (this.age < fade) this.op = this.age / fade;
-            else if (this.age > this.life - fade) this.op = (this.life - this.age) / fade;
-            else this.op = 1;
-            if (this.age >= this.life) this.reset();
-        }
+        constructor() { this.reset(); this.age = Math.random()*8000; }
+        reset() { this.x = Math.random()*canvas.width; this.y = Math.random()*canvas.height; this.idx = Math.random()>0.8?0:(Math.random()>0.4?1:2); this.sc = [0.45,0.28,0.15][this.idx]; this.op=0; this.life=10000+Math.random()*10000; this.age=0; this.bPh=Math.random()*7; this.tPh=Math.random()*7; }
+        update() { this.age+=16.6; this.bPh+=0.01; this.tPh+=0.05; this.op=this.age<2500?this.age/2500:(this.age>this.life-2500?(this.life-this.age)/2500:1); if(this.age>=this.life)this.reset(); }
         draw(ox, oy) {
-            const finalSc = this.sc * (1 + Math.sin(this.bPh) * this.bAmp) * (1 + Math.sin(this.tPh) * 0.1);
-            const dx = this.x - (motherCache.dark[this.idx].width * finalSc)/2 + (ox * (2.5 - this.idx));
-            const dy = this.y - (motherCache.dark[this.idx].height * finalSc)/2 + (oy * (2.5 - this.idx));
-            ctx.globalAlpha = Math.max(0, this.op * (1 - colorTransition));
-            ctx.drawImage(motherCache.dark[this.idx], dx, dy, motherCache.dark[this.idx].width * finalSc, motherCache.dark[this.idx].height * finalSc);
-            ctx.globalAlpha = Math.max(0, this.op * colorTransition);
-            ctx.drawImage(motherCache.light[this.idx], dx, dy, motherCache.light[this.idx].width * finalSc, motherCache.light[this.idx].height * finalSc);
+            const fSc = this.sc*(1+Math.sin(this.bPh)*0.2); const weight=2.5-this.idx;
+            ctx.globalAlpha = Math.max(0, this.op*(1-colorTransition)); ctx.drawImage(motherCache.dark[this.idx], this.x-100*fSc+ox*weight, this.y-200*fSc+oy*weight, 200*fSc, 400*fSc);
+            ctx.globalAlpha = Math.max(0, this.op*colorTransition); ctx.drawImage(motherCache.light[this.idx], this.x-100*fSc+ox*weight, this.y-200*fSc+oy*weight, 200*fSc, 400*fSc);
         }
     }
     let stars = [];
-    function init() {
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        const blurs = ['0px', '0.6px', '1.8px'];
-        motherCache.dark = blurs.map(b => createMother("white", b));
-        motherCache.light = blurs.map(b => createMother("black", b));
-        stars = Array.from({ length: config.starCount }, () => new Star());
-    }
-    function loop() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        v.tx *= config.friction; v.ty *= config.friction;
-        v.x += (v.tx - v.x) * config.ease; v.y += (v.ty - v.y) * config.ease;
-        const step = 16.6 / 1000;
-        // 🚀 同步渐变变量
-        if (isLightMode && colorTransition < 1) colorTransition = Math.min(1, colorTransition + step);
-        if (!isLightMode && colorTransition > 0) colorTransition = Math.max(0, colorTransition - step);
-        stars.forEach(s => { s.update(); s.draw(v.x, v.y); });
-        requestAnimationFrame(loop);
-    }
-    window.addEventListener('mousemove', (e) => {
-        if (lastM.x !== 0) { v.tx += (e.clientX - lastM.x) * 0.5; v.ty += (e.clientY - lastM.y) * 0.5; }
-        lastM.x = e.clientX; lastM.y = e.clientY;
-    });
-    window.addEventListener('resize', init);
-    init(); loop();
+    function init() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; motherCache.dark = ['0px','0.6px','1.8px'].map(b => createMother("white", b)); motherCache.light = ['0px','0.6px','1.8px'].map(b => createMother("black", b)); stars = Array.from({length: config.starCount}, () => new Star()); }
+    function loop() { ctx.clearRect(0,0,canvas.width,canvas.height); v.tx*=config.friction; v.ty*=config.friction; v.x+=(v.tx-v.x)*config.ease; v.y+=(v.ty-v.y)*config.ease; if(isLightMode&&colorTransition<1)colorTransition+=0.02; if(!isLightMode&&colorTransition>0)colorTransition-=0.02; stars.forEach(s=>{s.update();s.draw(v.x,v.y);}); requestAnimationFrame(loop); }
+    window.addEventListener('mousemove',(e)=>{if(lastM.x!==0){v.tx+=(e.clientX-lastM.x)*0.5;v.ty+=(e.clientY-lastM.y)*0.5;}lastM.x=e.clientX;lastM.y=e.clientY;});
+    window.onresize = init; init(); initWorks(); loop();
 </script>
 </body>
 </html>
