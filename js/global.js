@@ -50,6 +50,27 @@ if (canvas) {
                 menuLinks.forEach((link, index) => { link.style.transitionDelay = `${0.3 + index * 0.1}s`; });
             }
         };
+
+                /* --- global.js 补充部分 --- */
+
+        // ... 原有的 burger.onclick 逻辑保持不变 ...
+
+        // 🚀 新增：点击菜单以外区域关闭菜单
+        document.addEventListener('click', function(event) {
+            const menuOverlay = document.getElementById('menuOverlay');
+            const burger = document.getElementById('burger');
+            
+            // 检查菜单是否处于打开状态
+            if (menuOverlay.classList.contains('active')) {
+                // 如果点击的目标【不是菜单本身】且【不是汉堡按钮及其子元素】
+                if (!menuOverlay.contains(event.target) && !burger.contains(event.target)) {
+                    // 执行关闭逻辑
+                    burger.classList.remove('active');
+                    menuOverlay.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                }
+            }
+        });
     }
 
     function createMother(color, blurStr) {

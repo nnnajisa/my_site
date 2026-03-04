@@ -27,14 +27,14 @@ body.menu-open .bg-container, body.menu-open #universe, body.menu-open .top-cont
 }
 
 .lamp-toggle {
-    position: fixed; top: 0; left: 0; width: 200px; height: 65vh; z-index: 4000;
+    position: fixed; top: 0; left: 0; width: 200px; height: 65vh; z-index: 900;
     transform: scale(0.7); transform-origin: top center;
     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .click-mask {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    z-index: 100; cursor: pointer;
+    z-index: 200; cursor: pointer;
 }
 
 .layer-part { 
@@ -65,7 +65,7 @@ body.menu-open .bg-container, body.menu-open #universe, body.menu-open .top-cont
 
 .hero-container {
     position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    text-align: center; z-index: 9997; pointer-events: none; width: 100%;
+    text-align: center; z-index: 100; pointer-events: none; width: 100%;
 }
 .main-title {
     pointer-events: auto; color: white; font-size: 150px; letter-spacing: 50px; 
@@ -78,24 +78,61 @@ body.menu-open .bg-container, body.menu-open #universe, body.menu-open .top-cont
 .nav-item::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 1px; background: white; transition: width 0.3s ease; }
 .nav-item:hover::after { width: calc(100% - 6px); }
 
+/* --- global.css 修正部分 --- */
+
+/* 1. 菜单背景板：统一时间与曲线 */
 .menu-overlay {
-    position: fixed; top: 0; right: -450px; width: 400px; height: 100%;
+    position: fixed; 
+    top: 0; 
+    right: -450px; 
+    width: 400px; 
+    height: 100%;
     background: rgba(0, 0, 0, 0.03); 
-    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    z-index: 9998; display: flex; flex-direction: column; justify-content: center;
-    padding-left: 60px; padding-bottom: 25vh; box-sizing: border-box;
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 500; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center;
+    padding-left: 60px; 
+    padding-bottom: 25vh; 
+    box-sizing: border-box;
+    /* 🚀 核心：设置统一的 transition */
     transition: right 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: -20px 0 50px rgba(0, 0, 0, 0.5); border-left: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: -20px 0 50px rgba(0, 0, 0, 0.5); 
+    border-left: 1px solid rgba(255, 255, 255, 0.05);
 }
-.menu-overlay.active { right: 0; }
+
+.menu-overlay.active { 
+    right: 0; 
+}
 .menu-links { display: flex; flex-direction: column; gap: 40px; }
 .menu-link {
-    color: white; text-decoration: none; font-size: 32px; font-weight: 200;
-    letter-spacing: 10px; text-transform: uppercase; position: relative; 
-    display: inline-block; width: fit-content; transition: opacity 0.4s ease;
-    opacity: 0; transform: translateX(30px);
+    color: white; 
+    text-decoration: none; 
+    font-size: 32px; 
+    font-weight: 200;
+    letter-spacing: 10px; 
+    text-transform: uppercase; 
+    position: relative; 
+    display: inline-block; 
+    width: fit-content; 
+    
+    
+    /* 初始状态：在右边 30px 处，全透明 */
+    opacity: 0; 
+    transform: translateX(30px);
+    
+    /* 🚀 核心：这里的参数必须与 .menu-overlay 完全一致 */
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.menu-overlay.active .menu-link { opacity: 1; transform: translateX(0); }
+/* 菜单激活时，文字状态 */
+.menu-overlay.active .menu-link { 
+    opacity: 1; 
+    transform: translateX(0); 
+    /* 🚀 确保激活时也没有额外的延迟，大家一起起步 */
+}
 .menu-link::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 1px; background: white; transition: width 0.3s ease; }
 .menu-link:hover::after { width: calc(100% - 10px); }
 .menu-link:hover { opacity: 0.7; }
@@ -107,7 +144,7 @@ body.menu-open .bg-container, body.menu-open #universe, body.menu-open .top-cont
 .light-mode .nav-item::after, .light-mode .menu-link::after { background-color: black; }
 .light-mode .menu-overlay { background: rgba(255, 255, 255, 0.1); border-left: 1px solid rgba(0, 0, 0, 0.05); }
 
-.top-right-util { position: fixed; top: 45px; right: 55px; z-index: 9999; }
+.top-right-util { position: fixed; top: 45px; right: 55px; z-index: 501; }
 .burger-icon { width: 30px; height: 14px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; }
 .burger-icon span { width: 100%; height: 2px; background: white; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
 .burger-icon:not(.active):hover span:first-child { width: 80%; }
