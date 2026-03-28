@@ -6,9 +6,15 @@
 
 .works-sidebar {
     width: 220px; height: 100%; display: flex; flex-direction: column; 
-    justify-content: flex-end; padding-bottom: 8vh; gap: 40px;
+    justify-content: center; padding-bottom: 8vh; gap: 80px;
 }
 .nav-group { display: flex; flex-direction: column; gap: 12px; }
+#timeNav,
+#catNav {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
 .nav-label { font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: rgba(255,255,255,0.3); font-weight: 300; }
 .nav-link { 
     color: white; text-decoration: none; font-size: 11px; letter-spacing: 2px; 
@@ -35,15 +41,28 @@
 }
 .light-mode .work-img-box { background: rgba(0, 0, 0, 0.03); }
 .work-img-box img { 
-    width: 100%; height: 100%; object-fit: cover; 
-    filter: grayscale(0.8) brightness(0.7); 
-    opacity: 0; 
-    transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), filter 1s ease, transform 1s cubic-bezier(0.19, 1, 0.22, 1); 
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), 
+                transform 1s cubic-bezier(0.19, 1, 0.22, 1),
+                box-shadow 0.5s ease;
     pointer-events: none;
 }
+
 .work-img-box img.loaded { opacity: 1; }
 .work-img-box.is-loaded { background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; }
-.work-card:hover img.loaded { filter: grayscale(0) brightness(1.1); transform: scale(1.05); }
+
+.work-img-box {
+    transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1),
+                box-shadow 0.5s ease;
+}
+
+.work-card:hover .work-img-box {
+    transform: scale(1.05);
+    box-shadow: 0 24px 45px rgba(0, 0, 0, 0.3);
+}
 
 .work-meta { margin-top: 20px; pointer-events: none; }
 .work-type { font-size: 9px; letter-spacing: 3px; color: rgba(255,255,255,0.4); text-transform: uppercase; }

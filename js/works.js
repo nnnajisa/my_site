@@ -16,7 +16,7 @@ function initWorks() {
         card.addEventListener('mouseup', () => { if (!isDragging) openLightbox(work); });
         
         const vidId = work.mediaType === 'youtube' ? work.path.split('?')[0] : '';
-        const thumb = work.mediaType === 'image' ? work.path : `https://img.youtube.com/vi/${vidId}/maxresdefault.jpg`;
+        const thumb = work.thumbnail || (work.mediaType === 'image' ? work.path : `https://img.youtube.com/vi/${vidId}/maxresdefault.jpg`);
         
         card.innerHTML = `<div class="work-img-box"><img src="${thumb}"><div style="position:absolute;bottom:10px;right:10px;font-size:8px;color:white;opacity:0.5;z-index:5;">${work.mediaType.toUpperCase()}</div></div><div class="work-meta"><div class="work-type">${work.year} / ${work.category}</div><h3 class="work-name">${work.name}</h3></div>`;
         
@@ -55,8 +55,12 @@ function openLightbox(work) {
     const container = document.getElementById('lbMediaContainer');
     if (!container) return;
     container.innerHTML = '';
-    if (work.mediaType === 'image') {
+    if (work.link) {
+        container.innerHTML = `<iframe class="lightbox-media" style="width:80vw; height:45vw;" src="${work.link}" frameborder="0" allowfullscreen></iframe>`;
+    } else if (work.mediaType === 'image') {
         container.innerHTML = `<img src="${work.path}" class="lightbox-media" style="object-fit:contain">`;
+    } else if (work.mediaType === 'pdf') {
+        container.innerHTML = `<iframe class="lightbox-media" style="width:80vw; height:45vw;" src="${work.path}" frameborder="0"></iframe>`;
     } else {
         const vidId = work.path.split('?')[0];
         container.innerHTML = `<iframe class="lightbox-media" style="width:80vw; height:45vw;" src="https://www.youtube.com/embed/${vidId}?autoplay=1&rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
@@ -74,7 +78,7 @@ if (slider) {
     slider.addEventListener('mousedown', (e) => { isDown = true; isDragging = false; slider.style.scrollBehavior = 'auto'; startX = e.pageX - slider.offsetLeft; scrollLeftOrigin = slider.scrollLeft; });
     slider.addEventListener('mousemove', (e) => { if (!isDown) return; const x = e.pageX - slider.offsetLeft; const walk = (x - startX) * 2.8; if (Math.abs(walk) > 5) isDragging = true; slider.scrollLeft = scrollLeftOrigin - walk; });
     window.addEventListener('mouseup', () => { isDown = false; setTimeout(() => isDragging = false, 10); });
-    slider.addEventListener('wheel', (e) => { e.preventDefault(); slider.style.scrollBehavior = 'auto'; slider.scrollLeft += e.deltaY * 1.5; });
+    slider.addEventListener('wheel', (e) => { e.preventDefault(); slider.style.scrollBehavior = 'auto'; const delta = e.deltaX || e.deltaY; slider.scrollLeft += delta * 1.5; }, { passive: false });
     slider.addEventListener('scroll', () => { const p = (slider.scrollLeft / (slider.scrollWidth - slider.clientWidth)) * 100; if(progressFill) progressFill.style.width = (p || 0) + "%"; });
 }
 
