@@ -152,3 +152,77 @@ body.menu-open .bg-container, body.menu-open #universe, body.menu-open .top-cont
 .burger-icon.active span:first-child { transform: translateY(6px) rotate(45deg); width: 100%; }
 .burger-icon.active span:last-child { transform: translateY(-6px) rotate(-45deg); width: 100%; }
 .light-mode .burger-icon span { background-color: black; }
+
+@media (max-width: 768px) {
+.lamp-toggle {
+  width: 170px;
+  height: 42vh;
+  transform: scale(0.72);
+  transform-origin: top left;
+}
+
+.top-right-util {
+top: 20px;
+right: 18px;
+}
+
+.menu-overlay {
+  width: 78vw;
+  right: -78vw;
+  padding-left: 24px;
+  padding-right: 20px;
+  padding-bottom: 12vh;
+}
+
+.menu-links {
+gap: 24px;
+}
+
+.menu-link {
+font-size: 22px;
+letter-spacing: 6px;
+}
+
+.menu-footer {
+bottom: 28px;
+left: 28px;
+right: 28px;
+font-size: 9px;
+letter-spacing: 2px;
+line-height: 1.8;
+}
+
+.hero-container {
+width: 100%;
+padding: 0 20px;
+box-sizing: border-box;
+}
+
+.main-title {
+font-size: clamp(42px, 14vw, 72px);
+letter-spacing: 10px;
+padding-left: 10px;
+line-height: 1.05;
+}
+
+.description {
+font-size: 10px;
+letter-spacing: 3px;
+margin: 14px 0 34px 0;
+line-height: 1.7;
+}
+
+.sub-nav {
+flex-wrap: wrap;
+gap: 18px 22px;
+}
+
+.nav-item {
+font-size: 11px;
+letter-spacing: 3px;
+}
+}
+
+html, body {
+  overflow-x: hidden;
+}
