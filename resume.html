@@ -5,18 +5,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Resume | Najisa</title>
-  <link rel="stylesheet" href="css/global.css">
   <style>
-    .resume-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.58);
-      z-index: 950;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
+    html, body {
+      margin: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background: black;
+      transition: background-color 0.4s ease;
     }
+
+body.light-mode {
+  background: white;
+}
+
+.resume-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+body.light-mode .resume-overlay {
+  background: rgba(255, 255, 255, 0.08);
+}
 
 .resume-viewer {
   width: 85vw;
@@ -25,87 +40,44 @@
   background: white;
   display: block;
   cursor: default;
-  position: relative;
-  z-index: 960;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.22);
 }
 
-body.menu-open .bg-container,
-body.menu-open #universe,
-body.menu-open .top-container,
-body.menu-open .hero-container {
-  filter: blur(2px);
-  pointer-events: none;
+body.light-mode .resume-viewer {
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
 }
+```
 
   </style>
 </head>
-<body class="menu-open">
-
-<div class="menu-overlay" id="menuOverlay">
-  <nav class="menu-links">
-    <a href="works.html" class="menu-link">Work</a>
-    <a href="about.html" class="menu-link">About</a>
-    <a href="resume.html" class="menu-link current-page">Resume</a>
-    <a href="contact.html" class="menu-link">Contact</a>
-  </nav>
-  <div class="menu-footer"><p>Based in New York | Media & Computational Design</p></div>
-</div>
-
-<div class="lamp-toggle" id="lampControl">
-  <div class="click-mask" id="clickMask"></div>
-  <div class="layer-part eye-dark"></div>
-  <div class="layer-part eye-light"></div>
-  <div class="line-group">
-    <div class="layer-part line-dark"></div>
-    <div class="layer-part line-light"></div>
+<body>
+  <div class="resume-overlay" onclick="closeResume()">
+    <iframe
+      class="resume-viewer"
+      src="./assets/Resume-Amber He-2026.pdf"
+      title="Resume Preview">
+    </iframe>
   </div>
-  <div class="han-group">
-    <div class="layer-part han-dark"></div>
-    <div class="layer-part han-light"></div>
-  </div>
-</div>
 
-<div class="bg-container">
-  <div class="mesh-layer dark-bg"></div>
-  <div class="mesh-layer light-bg"></div>
-</div>
-
-<canvas id="universe"></canvas>
-
-<div class="top-container">
-  <div class="top-layer top-dark"></div>
-  <div class="top-layer top-light"></div>
-</div>
-
-<div class="top-right-util">
-  <div class="burger-icon" id="burger"><span></span><span></span></div>
-</div>
-
-<div class="resume-overlay" onclick="closeResume()">
-  <iframe
-    class="resume-viewer"
-    src="./assets/Resume-Amber He-2026.pdf"
-    title="Resume Preview">
-  </iframe>
-</div>
-
-<script src="js/global.js"></script>
-
-<script>
-  function closeResume() {
-    if (document.referrer && document.referrer !== window.location.href) {
-      window.location.href = document.referrer;
-    } else {
-      window.location.href = 'index.html';
+  <script>
+    const isLightMode = sessionStorage.getItem('portfolio-mode') === 'light';
+    if (isLightMode) {
+      document.body.classList.add('light-mode');
     }
-  }
 
-  const viewer = document.querySelector('.resume-viewer');
-  viewer.addEventListener('click', function(e) {
-    e.stopPropagation();
-  });
-</script>
+    function closeResume() {
+      if (document.referrer && document.referrer !== window.location.href) {
+        window.location.href = document.referrer;
+      } else {
+        window.location.href = "index.html";
+      }
+    }
+
+    const viewer = document.querySelector('.resume-viewer');
+    viewer.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+  </script>
 
 </body>
 </html>
